@@ -70,7 +70,7 @@ function App() {
       setData(data)
     }
   }
-  
+
   if (!loading) {
     return (
       <div className={cn('app')}>
@@ -91,7 +91,7 @@ function App() {
             onClick={loadMore}
             variant="contained"
             disabled={postsCount > searchData(data).length}
-            color="primary"> Загрузить еще </Button>
+            color="primary"> Показать больше </Button>
         </div>
       </div>
     );
