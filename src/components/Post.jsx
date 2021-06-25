@@ -1,8 +1,9 @@
 import React from 'react'
 import cn from 'classnames'
+
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import './style.css'
+import './style.scss'
 
 const Post = ({ data, deleteClick, idx}) => {
     const {
@@ -13,11 +14,11 @@ const Post = ({ data, deleteClick, idx}) => {
     } = data
     return (
         <div  className={cn('post')}>
-            <div className={cn('post_userId')}>{userId}</div>
-            <div className={cn('post_id')}>{id}</div>
-            <div className={cn('post_title')}>{title}</div>
-            <div className={cn('post_body')}>{body}</div>
-            <div className={cn('post_delete')} onClick={() => deleteClick(id, idx)}><DeleteIcon/></div>
+            <div className={cn('post__userId')}>{userId}</div>
+            <div className={cn('post__id')}>{id}</div>
+            <div className={cn('post__title')}>{title}</div>
+            <div className={cn('post__body')}>{body}</div>
+            <div className={cn('post__delete')} onClick={() => deleteClick(id, idx)}><DeleteIcon/></div>
         </div>
     )
 

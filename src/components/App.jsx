@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
-import Table from './components/Table'
-import { TextField, CircularProgress, Button } from '@material-ui/core'
+import Table from './Table'
 import cn from 'classnames'
+import { searchData } from "../utils/searchData"
 
-import './index.css'
+import { TextField, CircularProgress, Button } from '@material-ui/core'
+
+import './style.scss'
 
 function App() {
   const [data, setData] = useState([])
@@ -32,34 +34,10 @@ function App() {
   useEffect(() => {
   }, [deleteFlag])
 
-
-  const searchData = (arr) => {
-    const currentData = arr.filter(val => {
-      // eslint-disable-next-line eqeqeq
-      if (inputValue == "") {
-        return val
-      }
-      else if (val.title.toLowerCase().includes(inputValue.toLowerCase())) {
-        return val
-      }
-      else if (val.body.toLowerCase().includes(inputValue.toLowerCase())) {
-        return val
-      }
-      else if (String(val.id).includes(inputValue)) {
-        return val
-      }
-      else if (String(val.userId).includes(inputValue)) {
-        return val
-      }
-    })
-    return currentData
-  }
   const lastPostIdx = + postsCount
-  const visiblePosts = searchData(data).slice(0, lastPostIdx)
+  const visiblePosts = searchData(data, inputValue).slice(0, lastPostIdx)
 
-  const loadMore = () => {
-    setPostsCount(postsCount + 10)
-  }
+  const loadMore = () => setPostsCount(postsCount + 10)
 
   const deleteClick = async (id, idx) => {
     let conf = window.confirm('Удалить элемент?')
@@ -90,7 +68,7 @@ function App() {
           <Button
             onClick={loadMore}
             variant="contained"
-            disabled={postsCount > searchData(data).length}
+            disabled={postsCount > searchData(data, inputValue).length}
             color="primary"> Показать больше </Button>
         </div>
       </div>
