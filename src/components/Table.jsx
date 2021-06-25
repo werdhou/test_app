@@ -1,25 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Post from './Post'
-import axios from 'axios'
+import cn from 'classnames'
 
-const Table = () => {
-    const [data, setData] = useState([])
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const { data } = await axios.get('https://jsonplaceholder.typicode.com/posts')
-                setData(data)
-            }
-            catch (error) {
-                console.error(error)
-            }
-        }
-        fetchData()
-    }, [])
+const Table = ({data, deleteClick}) => {
 
     return (
-        data.map((i, idx) => <Post idx={idx} data={i}/>)
+        <div className={cn('table')}>
+            <div className={cn('table_head')}>
+                <div className={cn('post_userId', 'head_userId')}>User Id</div>
+                <div className={cn('post_id', 'head_id')}>ID</div>
+                <div className={cn('post_title', 'head_title')}>Title</div>
+                <div className={cn('post_body', 'head_body')}>Body </div>
+                <div className={cn('post_delete', 'head_delete')}>Удалить</div>
+            </div>
+            {data.map((i, idx) => <Post key={idx} idx={idx} data={i} deleteClick={deleteClick}/>)}
+        </div>
+
     )
 }
 
