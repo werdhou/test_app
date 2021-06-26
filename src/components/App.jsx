@@ -1,70 +1,40 @@
 import React, { useState, useEffect } from "react"
-import axios from "axios"
 import Table from './Table'
+import SelectPosts from "./Select"
 import cn from 'classnames'
 import { searchData } from "../utils/searchData"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchingData, onDeleteClick, onSortClick } from "../redux/actions"
 
 import { TextField, CircularProgress, Button } from '@material-ui/core'
 
 import './style.scss'
-import SelectPosts from "./Select"
 
-function App() {
-  const [data, setData] = useState([])
-  const [deleteFlag, setDeleteFlag] = useState(null)
+const App = () => {
   const [inputValue, setInputValue] = useState('')
-  const [loading, setLoading] = useState(false)
   const [postsCount, setPostsCount] = useState(10)
   const [selectValue, setSelectValue] = useState('')
 
+  const dispatch = useDispatch()
+  const { data, loading } = useSelector(({ data }) => data)
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true)
-      try {
-        const { data } = await axios.get('https://jsonplaceholder.typicode.com/posts')
-        setData(data)
-      }
-      catch (error) {
-        console.error(error)
-      }
-      finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [])
+    dispatch(fetchingData())
 
-  useEffect(() => {
-  }, [deleteFlag])
+  }, [dispatch])
+
 
   const lastPostIdx = + postsCount
   const visiblePosts = searchData(data, inputValue).slice(0, lastPostIdx)
 
   const loadMore = () => setPostsCount(postsCount + 10)
 
-  const deleteClick = async (id, idx) => {
-    let conf = window.confirm('Удалить элемент?')
-    if (conf) {
-      await axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
-      data.splice(idx, 1)
-      setDeleteFlag(idx+id)
-      setData(data)
-    }
-  }
-
-  const sortFunc = (value) => {
-    const newData = [...data]
-    newData.sort((a, b) => a[value] > b[value] ? 1 : -1)
-    setData(newData)
-  }
+  const deleteClick = (id, idx) => window.confirm('Удалить элемент?') && dispatch(onDeleteClick(data, idx, id))
 
   const handleChange = (event) => {
     setSelectValue(event.target.value)
-    sortFunc(event.target.value)
-}
-
-
+    dispatch(onSortClick(data, event.target.value))
+  }
 
   if (!loading) {
     return (
@@ -79,7 +49,7 @@ function App() {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
-          <SelectPosts handleChange={handleChange} selectValue={selectValue}/>
+          <SelectPosts handleChange={handleChange} selectValue={selectValue} />
         </div>
         <Table data={visiblePosts} deleteClick={deleteClick} />
         <div className={cn('button')}>
