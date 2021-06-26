@@ -15,7 +15,7 @@ function App() {
   const [inputValue, setInputValue] = useState('')
   const [loading, setLoading] = useState(false)
   const [postsCount, setPostsCount] = useState(10)
-  const [selectValue, setSelectValue] = useState(' ')
+  const [selectValue, setSelectValue] = useState('')
 
 
   useEffect(() => {

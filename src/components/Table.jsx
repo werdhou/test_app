@@ -1,6 +1,7 @@
 import React from 'react'
 import Post from './Post'
 import cn from 'classnames'
+import PropTypes from 'prop-types'
 
 const Table = ({ data, deleteClick }) => {
 
@@ -19,4 +20,8 @@ const Table = ({ data, deleteClick }) => {
     )
 }
 
+Table.propTypes = {
+    data: PropTypes.array.isRequired,
+    deleteClick: PropTypes.func
+}
 export default Table

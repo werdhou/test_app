@@ -1,16 +1,18 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles'
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
+import PropTypes from 'prop-types'
+
 
 import cn from 'classnames'
 
 import './style.scss'
 
 const names = [
-    'userId',
-    "id",
-    "title",
-    "body"
+    { userId: 'User Id' },
+    { id: "ID" },
+    { title: "Title" },
+    { body: "Body" }
 ];
 
 
@@ -18,11 +20,20 @@ const SelectPosts = ({ handleChange, selectValue }) => {
 
     const useStyles = makeStyles(() => ({
         formControl: {
-            minWidth: 120,
+            minWidth: 140,
         }
     }));
     const classes = useStyles()
 
+    const getItems = (name ,idx) => {
+        const key = Object.keys(name)
+        return (
+            <MenuItem key={idx} value={key[0]}>
+            {name[key[0]]}
+        </MenuItem>
+
+        )
+}
     return (
         <div className={cn('select')}>
             <FormControl className={classes.formControl}>
@@ -33,15 +44,16 @@ const SelectPosts = ({ handleChange, selectValue }) => {
                     value={selectValue}
                     onChange={handleChange}
                 >
-                    {names.map((name) => (
-                        <MenuItem key={name} value={name}>
-                            {name}
-                        </MenuItem>
-                    ))}
+                    {names.map(getItems)}
                 </Select>
             </FormControl>
         </div>
     )
+}
+
+SelectPosts.propTypes = {
+    handleChange: PropTypes.func.isRequired,
+    selectValue: PropTypes.string
 }
 
 export default SelectPosts

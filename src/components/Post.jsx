@@ -1,11 +1,13 @@
 import React from 'react'
 import cn from 'classnames'
+import PropTypes from 'prop-types';
 
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from '@material-ui/icons/Delete'
 
 import './style.scss'
 
 const Post = ({ data, deleteClick, idx}) => {
+
     const {
         userId,
         id,
@@ -21,7 +23,17 @@ const Post = ({ data, deleteClick, idx}) => {
             <div className={cn('post__delete')} onClick={() => deleteClick(id, idx)}><DeleteIcon/></div>
         </div>
     )
+}
 
+Post.propTypes = {
+    data: PropTypes.shape({
+        userId: PropTypes.number,
+        id: PropTypes.number,
+        title: PropTypes.string,
+        body: PropTypes.string
+    }).isRequired,
+    idx: PropTypes.number.isRequired,
+    deleteClick: PropTypes.func.isRequired
 }
 
 export default Post
