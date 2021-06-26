@@ -7,6 +7,7 @@ import { searchData } from "../utils/searchData"
 import { TextField, CircularProgress, Button } from '@material-ui/core'
 
 import './style.scss'
+import SelectPosts from "./Select"
 
 function App() {
   const [data, setData] = useState([])
@@ -14,6 +15,8 @@ function App() {
   const [inputValue, setInputValue] = useState('')
   const [loading, setLoading] = useState(false)
   const [postsCount, setPostsCount] = useState(10)
+  const [selectValue, setSelectValue] = useState(' ')
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,10 +24,11 @@ function App() {
       try {
         const { data } = await axios.get('https://jsonplaceholder.typicode.com/posts')
         setData(data)
-        setLoading(false)
       }
       catch (error) {
         console.error(error)
+      }
+      finally {
         setLoading(false)
       }
     }
@@ -49,6 +53,19 @@ function App() {
     }
   }
 
+  const sortFunc = (value) => {
+    const newData = [...data]
+    newData.sort((a, b) => a[value] > b[value] ? 1 : -1)
+    setData(newData)
+  }
+
+  const handleChange = (event) => {
+    setSelectValue(event.target.value)
+    sortFunc(event.target.value)
+}
+
+
+
   if (!loading) {
     return (
       <div className={cn('app')}>
@@ -62,6 +79,7 @@ function App() {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
+          <SelectPosts handleChange={handleChange} selectValue={selectValue}/>
         </div>
         <Table data={visiblePosts} deleteClick={deleteClick} />
         <div className={cn('button')}>

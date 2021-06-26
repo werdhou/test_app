@@ -2,7 +2,7 @@ import React from 'react'
 import Post from './Post'
 import cn from 'classnames'
 
-const Table = ({data, deleteClick}) => {
+const Table = ({ data, deleteClick }) => {
 
     return (
         <div className={cn('table')}>
@@ -13,7 +13,7 @@ const Table = ({data, deleteClick}) => {
                 <div className={cn('post__body', 'head_column')}>Body </div>
                 <div className={cn('post__delete_title', 'head_column')}>Удалить</div>
             </div>
-            {data.map((i, idx) => <Post key={idx} idx={idx} data={i} deleteClick={deleteClick}/>)}
+            {data.map((i, idx) => <Post key={idx} idx={idx} data={i} deleteClick={deleteClick} />)}
         </div>
 
     )
